@@ -1,0 +1,2 @@
+fedot==0.5.0
+lightautoml==0.3.2
