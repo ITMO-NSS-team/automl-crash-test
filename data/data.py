@@ -1,7 +1,7 @@
 import numpy as np
+import pandas as pd
 
-
-def get_train_data():
+def get_train_data(data_frame_flag: bool = False):
     """ Generate table with features and one-dim array with target for binary classification task
 
     Column description by indices:
@@ -45,10 +45,13 @@ def get_train_data():
     target = np.array(['0', '0', '0', '0', '0', '1', '1', '0', 0, '0', 0, '0',
                        '1', 1, '0', '0', '0', '0', '0', '1', np.nan], dtype=object)
 
+    if data_frame_flag:
+        features = pd.DataFrame.from_records(features)
+        features['Class'] = target
     return features, target
 
 
-def get_test_data():
+def get_test_data(data_frame_flag: bool = False):
     """ Generate array with features and target for test """
     features = np.array([[21, 1, 5, 13, 0, 'tuesday', 'a ', 'true', 1, '4.2', 'r'],
                          [22, 1, 6, 14, 0, 3, 'a', 'true', 0, '5.1', 'a'],
@@ -58,5 +61,7 @@ def get_test_data():
                         dtype=object)
 
     target = np.array(['0', '0', '0', '0', '1'], dtype=str)
-
+    if data_frame_flag:
+        features = pd.DataFrame.from_records(features)
+        features['Class'] = target
     return features, target
