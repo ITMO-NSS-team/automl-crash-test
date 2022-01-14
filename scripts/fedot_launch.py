@@ -1,7 +1,7 @@
 from fedot.api.main import Fedot
 from sklearn.metrics import classification_report, roc_auc_score
 
-from data import get_train_data, get_test_data
+from data.data import get_train_data, get_test_data
 
 
 def run_fedot(timeout: float = 1):
