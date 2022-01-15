@@ -24,7 +24,7 @@ def run_fedot(timeout: float = 1):
     predict_probs = fedot_model.predict_proba(test_features)
 
     print(classification_report(test_target, predict))
-    roc_auc = roc_auc_score(test_target, predict_probs, multi_class="ovr")
+    roc_auc = roc_auc_score(test_target, predict_probs)
     print(f'ROC AUC score: {roc_auc:.3f}')
 
 

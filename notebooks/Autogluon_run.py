@@ -1,7 +1,7 @@
 from data.data import get_train_data, get_test_data
 from scripts.autogluon_launch import AutoGluonRun
 
-train_data, target_train = get_train_data(data_frame_flag=True)
+train_data, target_train = get_train_data(as_pandas=True)
 test_data, target_test = get_test_data(data_frame_flag=True)
 AG_runner = AutoGluonRun(data=(train_data, test_data))
 

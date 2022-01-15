@@ -1,11 +1,66 @@
 import timeit
-from scripts.utils import ExceptionDecorator
+import os
 from autogluon.tabular import TabularPredictor
-from scripts.tabular_laucher import TabularLauncher
+
+
+def path_to_save_results() -> str:
+    path = project_path()
+    save_path = os.path.join(path, 'results_of_experiments')
+    return save_path
+
+
+def project_path() -> str:
+    name_project = 'automl-crash-test'
+    abs_path = os.path.abspath(os.path.curdir)
+    while os.path.basename(abs_path) != name_project:
+        abs_path = os.path.dirname(abs_path)
+    return abs_path
+
+
+def exception_decorator(function_to_decorate):
+    def exception_wrapper():
+        try:
+            function_to_decorate()
+        except Exception:
+            return None
+
+        return exception_wrapper
+
+
+class TabularLauncher:
+    # TODO refactor
+    def __init__(self,
+                 data: tuple,
+                 task: str = 'classicfication',
+                 params: dict = None,
+                 dataset_name: str = None,
+                 framework_name: str = None,
+                 launch: int = None,
+                 logger: object = None,
+                 helper: object = None,
+                 ):
+        self.train_data = data[0]
+        self.test_data = data[1]
+        self.params = params
+        self.dataset_name = dataset_name
+        self.launch = launch
+        self.logger = logger
+        self.metrics = None
+        self.helper = helper
+        self.task = task
+
+    def perform_experiment(self):
+        return
+
+    def fit(self):
+        return
+
+    def predict(self):
+        return
 
 
 class AutoGluonRun(TabularLauncher):
-
+    # TODO refactor
     def __init__(self,
                  data: tuple,
                  task: str = 'classicfication'):
@@ -36,7 +91,7 @@ class AutoGluonRun(TabularLauncher):
 
         return predictions, prediction_proba, target, inference
 
-    @ExceptionDecorator
+    @exception_decorator
     def perform_experiment(self):
         predictor = self.fit()
         predictions, prediction_proba, target, inference = self.predict(predictor)
