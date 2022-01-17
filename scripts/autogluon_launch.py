@@ -2,6 +2,8 @@ import timeit
 import os
 from autogluon.tabular import TabularPredictor
 
+from data.data import get_train_data, get_test_data
+
 
 def path_to_save_results() -> str:
     path = project_path()
@@ -98,3 +100,13 @@ class AutoGluonRun(TabularLauncher):
         fit_report = predictor.fit_summary()
 
         return fit_report, predictions, prediction_proba, target, inference
+
+
+if __name__ == '__main__':
+    train_data, target_train = get_train_data(as_pandas=True)
+    test_data, target_test = get_test_data(as_pandas=True)
+    AG_runner = AutoGluonRun(data=(train_data, test_data))
+
+    predictor = AG_runner.fit()
+    predictions, prediction_proba, target, inference = AG_runner.predict(predictor)
+    f = 2
