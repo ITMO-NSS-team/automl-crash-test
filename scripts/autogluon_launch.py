@@ -13,7 +13,7 @@ def run_autogluon():
 
     gluon_automl = TabularPredictor(label='target')
     gluon_automl.fit(train_data=df_train)
-    predict = gluon_automl.predict_proba(df_test)
+    predict_probs = gluon_automl.predict_proba(df_test)
 
     roc_auc = roc_auc_score(test_target, predict_probs)
     print(f'ROC AUC score: {roc_auc:.3f}')
