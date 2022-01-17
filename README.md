@@ -16,9 +16,11 @@ Useful Information:
 
 If the information from columns 5, 6 and 9 (at least from one column) is processed correctly, then the ROC AUC test metric will be 1.0. 
 
+Good luck!
+
 ## Current frameworks statuses
 
-* FEDOT 0.5.1 - successful completion, test ROC AUC 1.0
-* LightAutoML 0.3.2 - raised TypeError
-* TPOT 0.11.7 - raised TypeError
-Good luck!
+- [x] FEDOT 0.5.1 - successful completion, test ROC AUC 1.0
+- [x] LightAutoML 0.3.2 - raised TypeError
+- [x] TPOT 0.11.7 - raised TypeError
+- [x] Autogluon 0.3.1 - 

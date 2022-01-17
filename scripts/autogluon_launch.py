@@ -1,112 +1,23 @@
 import timeit
 import os
+from sklearn.metrics import roc_auc_score
 from autogluon.tabular import TabularPredictor
 
 from data.data import get_train_data, get_test_data
 
 
-def path_to_save_results() -> str:
-    path = project_path()
-    save_path = os.path.join(path, 'results_of_experiments')
-    return save_path
+def run_autogluon():
+    """ Launch AutoGluon framework for binary classification task """
+    df_train, _ = get_train_data(as_pandas=True)
+    df_test, test_target = get_test_data(as_pandas=True)
 
+    gluon_automl = TabularPredictor(label='target')
+    gluon_automl.fit(train_data=df_train)
+    predict = gluon_automl.predict_proba(df_test)
 
-def project_path() -> str:
-    name_project = 'automl-crash-test'
-    abs_path = os.path.abspath(os.path.curdir)
-    while os.path.basename(abs_path) != name_project:
-        abs_path = os.path.dirname(abs_path)
-    return abs_path
-
-
-def exception_decorator(function_to_decorate):
-    def exception_wrapper():
-        try:
-            function_to_decorate()
-        except Exception:
-            return None
-
-        return exception_wrapper
-
-
-class TabularLauncher:
-    # TODO refactor
-    def __init__(self,
-                 data: tuple,
-                 task: str = 'classicfication',
-                 params: dict = None,
-                 dataset_name: str = None,
-                 framework_name: str = None,
-                 launch: int = None,
-                 logger: object = None,
-                 helper: object = None,
-                 ):
-        self.train_data = data[0]
-        self.test_data = data[1]
-        self.params = params
-        self.dataset_name = dataset_name
-        self.launch = launch
-        self.logger = logger
-        self.metrics = None
-        self.helper = helper
-        self.task = task
-
-    def perform_experiment(self):
-        return
-
-    def fit(self):
-        return
-
-    def predict(self):
-        return
-
-
-class AutoGluonRun(TabularLauncher):
-    # TODO refactor
-    def __init__(self,
-                 data: tuple,
-                 task: str = 'classicfication'):
-        super().__init__(data, task)
-        self.task_type = task
-
-    def fit(self):
-
-        last_name = self.train_data.columns[-1]
-        target_name = ['class', 'Class', 'target']
-
-        if any(target_name) not in self.train_data.columns:
-            label = last_name
-        else:
-            label = [x for x in self.train_data.columns if x in target_name][0]
-
-        predictor = TabularPredictor(label=label).fit(train_data=self.train_data)
-
-        return predictor
-
-    def predict(self, predictor=None):
-        start_time = timeit.default_timer()
-        predictions = predictor.predict(self.test_data)
-        inference = timeit.default_timer() - start_time
-
-        target = self.test_data.iloc[:, -1]
-        prediction_proba = predictor.predict_proba(self.test_data)
-
-        return predictions, prediction_proba, target, inference
-
-    @exception_decorator
-    def perform_experiment(self):
-        predictor = self.fit()
-        predictions, prediction_proba, target, inference = self.predict(predictor)
-        fit_report = predictor.fit_summary()
-
-        return fit_report, predictions, prediction_proba, target, inference
+    roc_auc = roc_auc_score(test_target, predict_probs)
+    print(f'ROC AUC score: {roc_auc:.3f}')
 
 
 if __name__ == '__main__':
-    train_data, target_train = get_train_data(as_pandas=True)
-    test_data, target_test = get_test_data(as_pandas=True)
-    AG_runner = AutoGluonRun(data=(train_data, test_data))
-
-    predictor = AG_runner.fit()
-    predictions, prediction_proba, target, inference = AG_runner.predict(predictor)
-    f = 2
+    run_autogluon()
