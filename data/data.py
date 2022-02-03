@@ -1,6 +1,11 @@
 import numpy as np
 import pandas as pd
 
+from data.simplified_versions.data import get_train_data_without_nans_in_target, \
+    get_test_data_without_nans_in_target, \
+    get_train_data_with_only_str_type_in_target, \
+    get_test_data_with_only_str_type_in_target
+
 COLUMNS = ['feature_1', 'feature_2', 'feature_3', 'feature_4', 'feature_5',
            'feature_6', 'feature_7', 'feature_8', 'feature_9', 'feature_10',
            'feature_11']
@@ -70,3 +75,12 @@ def get_test_data(as_pandas: bool = False):
         features = pd.DataFrame.from_records(features, columns=COLUMNS)
         features['target'] = target
     return features, target
+
+
+def dict_with_different_versions_of_dataset():
+    data_versions = {'Full data': [get_train_data, get_test_data],
+                     'Without nan in target': [get_train_data_without_nans_in_target,
+                                               get_test_data_without_nans_in_target],
+                     'Without int in target ': [get_train_data_with_only_str_type_in_target,
+                                                get_test_data_with_only_str_type_in_target]}
+    return data_versions

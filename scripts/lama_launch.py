@@ -11,9 +11,6 @@ def run_lama():
     df_train, _ = get_train_data(as_pandas=True)
     df_test, test_target = get_test_data(as_pandas=True)
 
-    # Get rid of row with nan in target - because it causes error
-    df_train = df_train.iloc[:-1]
-
     automl = TabularAutoML(task=Task(name='binary',
                                      metric=roc_auc_score))
     automl.fit_predict(df_train, roles={'target': 'target'})
